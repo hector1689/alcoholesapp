@@ -14,7 +14,7 @@ class AlcoholesController extends Controller
   public $id_ejecutor;
   public $password;
   public $municipio;
-  public $id_requisito;
+  public $id_requisito
   public $id_infraccion;
   public $id_dependencia;
 
@@ -987,7 +987,7 @@ para la pantalla adeudos registrados
           while ($row = oci_fetch_array($str_Historial))
           {
                 $respuesta["id_alcoholes"]=$row[0];
-                $ReemplazaLetra = new ClsValidaCaracteres;
+                ReemplazaLetra = new ClsValidaCaracteres;
                 $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
                 $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
 

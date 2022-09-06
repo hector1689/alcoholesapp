@@ -22,6 +22,7 @@ Route::get('/', function () {
 
 
 
+
 /*Route::group(["middleware" => ['auth:sanctum', 'verified']], function(){
 */
 
@@ -126,6 +127,5 @@ Route::post('/verificacion/FinalizaVerificacion', 'FinanzasController@fnFinaliza
 
 
 //
-
 
 require __DIR__.'/auth.php';
