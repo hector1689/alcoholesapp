@@ -10,7 +10,7 @@ use DB;
 use Hash;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
-
+use Auth;
 class UserController extends Controller
 {
     /**
@@ -58,7 +58,14 @@ class UserController extends Controller
           })
 
           ->addColumn('action', function($data){
-              $permiso = '<a href="/dashboard/users/'.$data->id.'/edit"><i class="flaticon2-pen text-primary"></i></a>';
+
+              if(Auth::user()->can('editar usuario')){
+
+                $permiso = '<a href="/dashboard/users/'.$data->id.'/edit"><i class="flaticon2-pen text-primary"></i></a>';
+              }else{
+                $permiso ='';
+              }
+
               return $permiso;
           })
 
@@ -107,7 +114,7 @@ class UserController extends Controller
         $user = User::create($input);
         $user->assignRole($request->roles);
 
-      
+
         $usuario = User::find($user->id);
         $usuario->origen = 0;
         $usuario->save();

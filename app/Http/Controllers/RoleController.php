@@ -37,7 +37,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
       if ($request->ajax()) {
-        $roles = Role::orderBy('id','DESC')
+        $roles = Role::whereIn('id',[1,2,3])->orderBy('id','DESC')
         ->select('id', 'name','created_at')
           ->get();
           return datatables()->of($roles)

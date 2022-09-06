@@ -51,7 +51,7 @@
           @endif
           @if (@Auth::user()->can('mostrar roles') || @Auth::user()->hasRole('administrador'))
             <li class="menu-item  menu-item" aria-haspopup="true"><a href="{{route('roles.index')}}" class="menu-link ">
-              <i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Roles y Permmisos</span></a>
+              <i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Roles y Permisos</span></a>
             </li>
           @endif
         </ul>
