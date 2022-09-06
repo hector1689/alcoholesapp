@@ -19,13 +19,16 @@ class AlcoholesController extends Controller
   public $id_dependencia;
   public $ArrEjecutoresGuardados;
   public $ArrGuardados;
-    public $Datos_Guardados;
+
+  public $Datos_Guardados;
 
 
 /*
     GetEjecutores() sacara el listado de todos los verificadores util para combos
 
     GetInspectores() sacara el listado de todos los verificadores util para combos
+
+     GetMunicipios() sacara el listado de  municipios de tamaulipas  con id_municipio y descripcion
 
     GetCatalogorequisitos sacara el listado de requisitos util en ventana de alta de multas.
     GetCatalogodependencias sacara listado de dependencias util en alta de multas.
@@ -197,6 +200,62 @@ class AlcoholesController extends Controller
       return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
 
     }
+
+     function GetMunicipios()
+    {
+      try {
+
+               $vIdMuniConec=1;
+
+               $Conec_Muni = new Class_Conexion;
+               $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
+               $conec_muni=$Conec_Muni->DB_conexion;
+
+               $str_verifica_datos = oci_parse($conec_muni," SELECT  id_municipio, desc_ofnafiscal
+                from grlpar_ofnafiscal
+                where  id_ofnafiscal < 44
+                order by id_municipio");
+
+
+               oci_execute($str_verifica_datos);
+
+               oci_close($conec_muni);
+
+              $ArrGuardado=array();
+              $ArrGuardados =array();
+              $cuantos=0;
+
+               while ($row = oci_fetch_array($str_verifica_datos))
+               {
+                 $cuantos=$cuantos+1;
+
+               $ArrGuardado['id_municipio']=$row[0];
+
+               $ArrGuardado["descripcion_municipio"]=$row[1];
+
+               $ArrGuardados[(string)$cuantos]=$ArrGuardado;
+
+
+                }
+            oci_free_statement($str_verifica_datos);
+
+
+
+
+          return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
+      }
+      catch (Exception $e) {
+
+      }
+      $this->mensaje=$e;
+
+
+           $this->mensaje='ejecutores no disponibles por el momento, favor de reportarlo';
+
+      return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
+
+    }
+
 
 
 

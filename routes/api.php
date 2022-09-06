@@ -267,3 +267,5 @@ Route::post('/verificacion/FinalizaVerificacion', 'FinanzasController@fnFinaliza
 Route::get('/inspectores', 'AlcoholesController@GetInspectores')->name('inspectores');
 
 Route::get('/resumen/{municipio}/{id_ejecutor}/{fecha_inicio}/{fecha_fin}', 'AlcoholesController@GetResumenVerificaciones')->name('resumen');
+
+Route::get('/municipios', 'AlcoholesController@GetMunicipios')->name('municipios');
