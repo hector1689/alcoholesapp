@@ -115,7 +115,7 @@ class AlcoholesController extends Controller
               }
 
 
-          return response()->json(["success"=> count($ArrSucursalesGuardados>0, "data"=> $ArrSucursalesGuardados], 200);
+          return response()->json(["success"=> count($ArrSucursalesGuardados>0), "data"=> $ArrSucursalesGuardados], 200);
       }
       catch (Exception $e) {
 
