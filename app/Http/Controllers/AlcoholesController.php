@@ -14,7 +14,7 @@ class AlcoholesController extends Controller
   public $id_ejecutor;
   public $password;
   public $municipio;
-  public $id_requisito
+  public $id_requisito;
   public $id_infraccion;
   public $id_dependencia;
 
