@@ -987,7 +987,7 @@ para la pantalla adeudos registrados
           while ($row = oci_fetch_array($str_Historial))
           {
                 $respuesta["id_alcoholes"]=$row[0];
-                ReemplazaLetra = new ClsValidaCaracteres;
+                $ReemplazaLetra = new ClsValidaCaracteres;
                 $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
                 $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
 
