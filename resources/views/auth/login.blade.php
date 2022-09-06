@@ -22,7 +22,7 @@
       <form class="form text-left"  method="POST" action="{{ route('login') }}">
             @csrf
         <div class="form-group">
-          <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="email"  id="email" placeholder="Email" name="email" :value="old('email')" required autofocus  autocomplete="off" />
+          <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text"  id="username" placeholder="Usuario" name="username" :value="old('username')" required autofocus  autocomplete="off" />
         </div>
         <div class="form-group">
           <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="Password" id="password" placeholder="Password"  name="password" required autocomplete="current-password" autocomplete="off" />
