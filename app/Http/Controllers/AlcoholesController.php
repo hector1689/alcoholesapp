@@ -24,6 +24,9 @@ class AlcoholesController extends Controller
 
 /*
     GetEjecutores() sacara el listado de todos los verificadores util para combos
+
+    GetInspectores() sacara el listado de todos los verificadores util para combos
+
     GetCatalogorequisitos sacara el listado de requisitos util en ventana de alta de multas.
     GetCatalogodependencias sacara listado de dependencias util en alta de multas.
     GetCatalogoMotivos () sacara motivos para alta de multas de alcoholes.
@@ -42,7 +45,7 @@ class AlcoholesController extends Controller
 
     GetVerificacionesRealizadas($municipio, $id_ejecutor) obtendra la verificaciones ya realizadas por verificaor
 
-    GetResumenVerificaciones($municipio, $id_ejecutor) total de verificaciones pendientes y realizadas pantalla estadisticas
+    GetResumenVerificaciones($municipio, $id_ejecutor, $fecha_inicio, $fecha_fin) total de verificaciones pendientes y realizadas pantalla estadisticas
 
     Gethistorial($id_alcoholes ) obtiene historial , horarios de cierre y apertura
 
@@ -64,7 +67,7 @@ class AlcoholesController extends Controller
 
 
 //saca el listado de verificadores para llenar combo como
-  // en la pantalla verificadores1
+  // en la pantalla verificadores1 GRUPO 6 VERIFICADORES , GRUPO 98 INSPECTOR ALCOHOLES
      function GetEjecutores()
   {
       try {
@@ -79,7 +82,73 @@ class AlcoholesController extends Controller
                 NOMBRE_EJECUTOR,
                 PASSWORD
                 from ejecat_ejecutor
-                where  id_grupo = 6
+                where  id_grupo  = 6
+                and fecha_baja is null
+                ORDER BY NOMBRE_EJECUTOR");
+
+
+               oci_execute($str_verifica_datos);
+
+               oci_close($conec_muni);
+
+              $ArrEjecutorGuardado=array();
+              $ArrEjecutoresGuardados =array();
+              $cuantos=0;
+
+               while ($row = oci_fetch_array($str_verifica_datos))
+               {
+                 $cuantos=$cuantos+1;
+
+               $id_ejecutor= $ArrEjecutorGuardado['id_ejecutor']=$row[0];
+               $ReemplazaLetra = new ClsValidaCaracteres;
+               $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
+               $ArrEjecutorGuardado['nombre_ejecutor']=$ReemplazaLetra->Variable;
+               $password =$ArrEjecutorGuardado["password"]=$row[2];
+
+               $ArrEjecutoresGuardados[(string)$cuantos]=$ArrEjecutorGuardado;
+
+
+                }
+            oci_free_statement($str_verifica_datos);
+
+
+            if ($cuantos > 0)
+              {
+                  $Datos_Guardados=$ArrEjecutoresGuardados;
+              }
+
+
+          return response()->json(["success"=> count($ArrEjecutoresGuardados)>0, "data"=> $ArrEjecutoresGuardados], 200);
+        }
+      catch (Exception $e) {
+
+      }
+      $this->mensaje=$e;
+
+
+           $this->mensaje='ejecutores no disponibles por el momento, favor de reportarlo';
+
+      return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
+
+     }
+
+
+
+    function GetInspectores()
+    {
+      try {
+
+               $vIdMuniConec=1;
+
+               $Conec_Muni = new Class_Conexion;
+               $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
+               $conec_muni=$Conec_Muni->DB_conexion;
+
+               $str_verifica_datos = oci_parse($conec_muni,"SELECT  id_ejecutor,
+                NOMBRE_EJECUTOR,
+                PASSWORD
+                from ejecat_ejecutor
+                where  id_grupo  = 98
                 and fecha_baja is null
                 ORDER BY NOMBRE_EJECUTOR");
 
@@ -127,7 +196,8 @@ class AlcoholesController extends Controller
 
       return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
 
-     }
+    }
+
 
 
 //OBTIENE CATALOGO DE REQUISITOS
