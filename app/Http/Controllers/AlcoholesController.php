@@ -62,58 +62,75 @@ class AlcoholesController extends Controller
 
 //saca el listado de verificadores para llenar combo como
   // en la pantalla verificadores1
-     function GetEjecutores()
-  {
-      try {
+  function GetEjecutores()
+{
+   try {
 
-               $vIdMuniConec=1;
+            $vIdMuniConec=1;
 
-               $Conec_Muni = new Class_Conexion;
-               $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
-               $conec_muni=$Conec_Muni->DB_conexion;
+            $Conec_Muni = new Class_Conexion;
+            $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
+            $conec_muni=$Conec_Muni->DB_conexion;
 
-               $str_verifica_datos = oci_parse($conec_muni,"SELECT  id_ejecutor,
-                NOMBRE_EJECUTOR,
-                PASSWORD
-                from ejecat_ejecutor
-                where  id_grupo = 6
-                and fecha_baja is null
-                ORDER BY NOMBRE_EJECUTOR");
-
-
-               oci_execute($str_verifica_datos);
-
-               oci_close($conec_muni);
-
-               $respuesta =[];
-
-               while ($row = oci_fetch_array($str_verifica_datos))
-               {
-
-               $id_ejecutor=$respuesta["id_ejecutor"]=$row[0];
-               $ReemplazaLetra = new ClsValidaCaracteres;
-               $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-               $respuesta["nombre_ejecutor"]=$ReemplazaLetra->Variable;
-               $password =$respuesta["password"]=$row[2];
+            $str_verifica_datos = oci_parse($conec_muni,"SELECT  id_ejecutor,
+             NOMBRE_EJECUTOR,
+             PASSWORD
+             from ejecat_ejecutor
+             where  id_grupo = 6
+             and fecha_baja is null
+             ORDER BY NOMBRE_EJECUTOR");
 
 
-                }
-            oci_free_statement($str_verifica_datos);
+            oci_execute($str_verifica_datos);
+
+            oci_close($conec_muni);
+
+           $ArrEjecutorGuardado=array();
+           $ArrEjecutoresGuardados =array();
 
 
-          return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
-      }
-      catch (Exception $e) {
+           // $respuesta =[];
+           $cuantos=0;
 
-      }
-      $this->mensaje=$e;
+            while ($row = oci_fetch_array($str_verifica_datos))
+            {
+              $cuantos=$cuantos+1;
+
+            $id_ejecutor= $ArrEjecutorGuardado['id_ejecutor']=$row[0];
+            $ReemplazaLetra = new ClsValidaCaracteres;
+            $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
+            $ArrEjecutorGuardado['nombre_ejecutor']=$ReemplazaLetra->Variable;
+            $password =$ArrEjecutorGuardado["password"]=$row[2];
+
+            $ArrEjecutoresGuardados[(string)$cuantos]=$ArrEjecutorGuardado;
 
 
-          // $this->mensaje='Historial no disponible por el momento, favor de reportarlo';
+             }
+         oci_free_statement($str_verifica_datos);
 
-      return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
 
-     }
+         if ($cuantos > 0)
+           {
+               $Sucursales_Datos_Guardados=$ArrEjecutoresGuardados;
+           }
+
+
+       return response()->json(["success"=> count($ArrSucursalesGuardados>0, "data"=> $ArrSucursalesGuardados], 200);
+   }
+   catch (Exception $e) {
+
+   }
+   $this->mensaje=$e;
+
+
+       // $this->mensaje='Historial no disponible por el momento, favor de reportarlo';
+
+   return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
+
+  }
+
+
+
 
 
 //OBTIENE CATALOGO DE REQUISITOS
