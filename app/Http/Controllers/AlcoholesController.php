@@ -14,9 +14,12 @@ class AlcoholesController extends Controller
   public $id_ejecutor;
   public $password;
   public $municipio;
-  public $id_requisito;
+  public $id_requisito
   public $id_infraccion;
   public $id_dependencia;
+  public $ArrEjecutoresGuardados;
+  public $ArrGuardados;
+    public $Datos_Guardados;
 
 
 /*
@@ -25,11 +28,11 @@ class AlcoholesController extends Controller
     GetCatalogodependencias sacara listado de dependencias util en alta de multas.
     GetCatalogoMotivos () sacara motivos para alta de multas de alcoholes.
     fnCalculaImporte($municipio, $fecha_determinacion, $id_infraccion, $califica) utilpara alta de multas regrsa importe de la multa y fundamento de sancion y multa.
-     GetDatoSimples($municipio, $folio,$tipo) sacara la primer consulta datos del negocio  que se usan como encabezados.
+    GetDatoSimples($municipio, $folio,$tipo) sacara la primer consulta datos del negocio  que se usan como encabezados.
 
     GetDatosGenerales($municipio, $id_alcoholes) saca datos mas completos para pantalla datos generales.
 
-   GetRequisitos($municipio,$id_alcoholes) obtiene los reuisitos ya presentados de un negocio para pantalla requisitos presentados
+    GetRequisitos($municipio,$id_alcoholes) obtiene los reuisitos ya presentados de un negocio para pantalla requisitos presentados
 
     GetpagosRealizados($municipio,$id_alcoholes) sacara los pagos realizados de un negocio
 
@@ -62,75 +65,69 @@ class AlcoholesController extends Controller
 
 //saca el listado de verificadores para llenar combo como
   // en la pantalla verificadores1
-  function GetEjecutores()
-{
-   try {
+     function GetEjecutores()
+  {
+      try {
 
-            $vIdMuniConec=1;
+               $vIdMuniConec=1;
 
-            $Conec_Muni = new Class_Conexion;
-            $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
-            $conec_muni=$Conec_Muni->DB_conexion;
+               $Conec_Muni = new Class_Conexion;
+               $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
+               $conec_muni=$Conec_Muni->DB_conexion;
 
-            $str_verifica_datos = oci_parse($conec_muni,"SELECT  id_ejecutor,
-             NOMBRE_EJECUTOR,
-             PASSWORD
-             from ejecat_ejecutor
-             where  id_grupo = 6
-             and fecha_baja is null
-             ORDER BY NOMBRE_EJECUTOR");
-
-
-            oci_execute($str_verifica_datos);
-
-            oci_close($conec_muni);
-
-           $ArrEjecutorGuardado=array();
-           $ArrEjecutoresGuardados =array();
+               $str_verifica_datos = oci_parse($conec_muni,"SELECT  id_ejecutor,
+                NOMBRE_EJECUTOR,
+                PASSWORD
+                from ejecat_ejecutor
+                where  id_grupo = 6
+                and fecha_baja is null
+                ORDER BY NOMBRE_EJECUTOR");
 
 
-           // $respuesta =[];
-           $cuantos=0;
+               oci_execute($str_verifica_datos);
 
-            while ($row = oci_fetch_array($str_verifica_datos))
-            {
-              $cuantos=$cuantos+1;
+               oci_close($conec_muni);
 
-            $id_ejecutor= $ArrEjecutorGuardado['id_ejecutor']=$row[0];
-            $ReemplazaLetra = new ClsValidaCaracteres;
-            $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-            $ArrEjecutorGuardado['nombre_ejecutor']=$ReemplazaLetra->Variable;
-            $password =$ArrEjecutorGuardado["password"]=$row[2];
+              $ArrEjecutorGuardado=array();
+              $ArrEjecutoresGuardados =array();
+              $cuantos=0;
 
-            $ArrEjecutoresGuardados[(string)$cuantos]=$ArrEjecutorGuardado;
+               while ($row = oci_fetch_array($str_verifica_datos))
+               {
+                 $cuantos=$cuantos+1;
 
+               $id_ejecutor= $ArrEjecutorGuardado['id_ejecutor']=$row[0];
+               $ReemplazaLetra = new ClsValidaCaracteres;
+               $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
+               $ArrEjecutorGuardado['nombre_ejecutor']=$ReemplazaLetra->Variable;
+               $password =$ArrEjecutorGuardado["password"]=$row[2];
 
-             }
-         oci_free_statement($str_verifica_datos);
-
-
-         if ($cuantos > 0)
-           {
-               $Sucursales_Datos_Guardados=$ArrEjecutoresGuardados;
-           }
+               $ArrEjecutoresGuardados[(string)$cuantos]=$ArrEjecutorGuardado;
 
 
-       return response()->json(["success"=> count($ArrSucursalesGuardados > 0 ), "data"=> $ArrSucursalesGuardados], 200);
-   }
-   catch (Exception $e) {
-
-   }
-   $this->mensaje=$e;
+                }
+            oci_free_statement($str_verifica_datos);
 
 
-       // $this->mensaje='Historial no disponible por el momento, favor de reportarlo';
-
-   return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
-
-  }
-
+            if ($cuantos > 0)
+              {
+                  $Datos_Guardados=$ArrEjecutoresGuardados;
+              }
 
 
+          return response()->json(["success"=> count($ArrSucursalesGuardados>0, "data"=> $ArrSucursalesGuardados], 200);
+      }
+      catch (Exception $e) {
+
+      }
+      $this->mensaje=$e;
+
+
+           $this->mensaje='ejecutores no disponibles por el momento, favor de reportarlo';
+
+      return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
+
+     }
 
 
 //OBTIENE CATALOGO DE REQUISITOS
@@ -150,28 +147,28 @@ class AlcoholesController extends Controller
                 FROM ALCCAT_TIPO_REQUISITO
                 order by desc_tiporequisito");
 
-
                oci_execute($str_datos);
-
                oci_close($conec_muni);
 
-               $respuesta =[];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($str_datos))
                {
-
-               $id_requisito=$respuesta["id_requisito"]=$row[0];
+               $cuantos=$cuantos+1;
+               $id_requisito=$ArrGuardado["id_requisito"]=$row[0];
                $ReemplazaLetra = new ClsValidaCaracteres;
                $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-               $respuesta["descripcion_requisito"]=$ReemplazaLetra->Variable;
+               $ArrGuardado["descripcion_requisito"]=$ReemplazaLetra->Variable;
 
-
+               $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                 }
             oci_free_statement($str_datos);
 
 
-          return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+          return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
       }
       catch (Exception $e) {
 
@@ -207,23 +204,27 @@ class AlcoholesController extends Controller
 
                oci_close($conec_muni);
 
-               $respuesta =[];
+
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($str_datos))
                {
+                 $cuantos=$cuantos+1;
 
-               $id_dependencia=$respuesta["id_dependencia"]=$row[0];
+               $id_dependencia=$ArrGuardado["id_dependencia"]=$row[0];
                $ReemplazaLetra = new ClsValidaCaracteres;
                $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-               $respuesta["desc_dependencia"]=$ReemplazaLetra->Variable;
+               $ArrGuardado["desc_dependencia"]=$ReemplazaLetra->Variable;
 
-
+               $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                 }
             oci_free_statement($str_datos);
 
 
-          return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+          return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
       }
       catch (Exception $e) {
 
@@ -265,35 +266,41 @@ class AlcoholesController extends Controller
 
                oci_close($conec_muni);
 
-               $respuesta =[];
+                 $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($str_datos))
                {
+                 $cuantos=$cuantos+1;
 
-               $id_infraccion=$respuesta["id_infraccion"]=$row[0];
+               $id_infraccion=$ArrGuardado["id_infraccion"]=$row[0];
 
 
                $ReemplazaLetra = new ClsValidaCaracteres;
                $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-               $respuesta["descripcion_infraccion"]=$ReemplazaLetra->Variable;
+               $ArrGuardado["descripcion_infraccion"]=$ReemplazaLetra->Variable;
 
                $ReemplazaLetra = new ClsValidaCaracteres;
                $ReemplazaLetra->fnReemplazaLetra(trim($row[2]));
-               $respuesta["fundamento_infraccion"]=$ReemplazaLetra->Variable;
+               $ArrGuardado["fundamento_infraccion"]=$ReemplazaLetra->Variable;
 
                $ReemplazaLetra = new ClsValidaCaracteres;
                $ReemplazaLetra->fnReemplazaLetra(trim($row[3]));
-               $respuesta["fundamento_sancion"]=$ReemplazaLetra->Variable;
+               $ArrGuardado["fundamento_sancion"]=$ReemplazaLetra->Variable;
 
-               $respuesta["sancion_minima"]=$row[4];
-               $respuesta["sancion_media"]=$row[5];
-               $respuesta["sancion_maxima"]=$row[6];
-               $respuesta["ejercicio_fiscal"]=$row[7];
+               $ArrGuardado["sancion_minima"]=$row[4];
+               $ArrGuardado["sancion_media"]=$row[5];
+               $ArrGuardado["sancion_maxima"]=$row[6];
+               $ArrGuardado["ejercicio_fiscal"]=$row[7];
+
+                $ArrGuardados[(string)$cuantos]=$ArrGuardado;
+
                 }
             oci_free_statement($str_datos);
 
 
-          return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+          return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
       }
       catch (Exception $e) {
 
@@ -627,21 +634,26 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSacaRequsitos))
                {
+                 $cuantos=$cuantos+1;
 
-                   $id_alcoholes=$respuesta["id_alcoholes"]=$row[0];
-                   $respuesta["folio_documento"]=$row[1];
-                   $respuesta["fecha_documento"]=$row[2];
-                   $respuesta["ejercicio_fiscal"]=$row[3];
+                   $id_alcoholes=$ArrGuardado["id_alcoholes"]=$row[0];
+                   $ArrGuardado["folio_documento"]=$row[1];
+                   $ArrGuardado["fecha_documento"]=$row[2];
+                   $ArrGuardado["ejercicio_fiscal"]=$row[3];
+
+                   $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
                oci_free_statement($strSacaRequsitos);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -706,22 +718,26 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSacaPagos))
                {
+                 $cuantos=$cuantos+1;
 
-                   $respuesta["fecha_pago"]=$row[0];
-                   $respuesta["ejercicio_fiscal"]=$row[1];
-                   $respuesta["concepto"]=$row[2];
-                   $respuesta["importe_pagado"]=$row[3];
+                   $ArrGuardado["fecha_pago"]=$row[0];
+                   $ArrGuardado["ejercicio_fiscal"]=$row[1];
+                   $ArrGuardado["concepto"]=$row[2];
+                   $ArrGuardado["importe_pagado"]=$row[3];
 
+                    $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
                oci_free_statement($strSacaPagos);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -742,7 +758,7 @@ para la pantalla adeudos registrados
     {
         try
         {
-            $vIdMuniConec=$municipio;
+            $vIdMuniConec=substr($id_alcoholes,0,2);
               $Conec_Muni = new Class_Conexion;
               $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
               $conec_muni=$Conec_Muni->DB_conexion;
@@ -765,19 +781,24 @@ para la pantalla adeudos registrados
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSacaAdeudos))
                {
-                   $respuesta["ejercicio_fiscal"]=$row[0];
-                   $respuesta["concepto"]=$row[1];
-                   $respuesta["fecha_vencimiento"]=$row[2];
-                   $respuesta["importe_pagado"]=$row[3];
+                 $cuantos=$cuantos+1;
+                   $ArrGuardado["ejercicio_fiscal"]=$row[0];
+                   $ArrGuardado["concepto"]=$row[1];
+                   $ArrGuardado["fecha_vencimiento"]=$row[2];
+                   $ArrGuardado["importe_pagado"]=$row[3];
+
+                   $ArrGuardados[(string)$cuantos]=$ArrGuardado;
                }
                oci_free_statement($strSacaAdeudos);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -822,24 +843,28 @@ para la pantalla adeudos registrados
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+               $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSaca))
                {
+                 $cuantos=$cuantos+1;
                    $ReemplazaLetra = new ClsValidaCaracteres;
                     $ReemplazaLetra->fnReemplazaLetra(trim($row[0]));
-                    $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
+                    $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
 
                     $ReemplazaLetra = new ClsValidaCaracteres;
                     $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-                    $respuesta["nombre_comercial"]=$ReemplazaLetra->Variable;
-                   $respuesta["fecha_debe_visitar"]=$row[2];
+                    $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
+                   $ArrGuardado["fecha_debe_visitar"]=$row[2];
+                   $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
                oci_free_statement($strSaca);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -881,24 +906,29 @@ para la pantalla adeudos registrados
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+                 $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSaca))
                {
+                 $cuantos=$cuantos+1;
                    $ReemplazaLetra = new ClsValidaCaracteres;
                     $ReemplazaLetra->fnReemplazaLetra(trim($row[0]));
-                    $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
+                    $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
 
                     $ReemplazaLetra = new ClsValidaCaracteres;
                     $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-                    $respuesta["nombre_comercial"]=$ReemplazaLetra->Variable;
-                   $respuesta["fecha_debe_visitar"]=$row[2];
+                    $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
+                   $ArrGuardado["fecha_debe_visitar"]=$row[2];
+
+                    $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
                oci_free_statement($strSaca);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -1004,7 +1034,7 @@ para la pantalla adeudos registrados
           while ($row = oci_fetch_array($str_Historial))
           {
                 $respuesta["id_alcoholes"]=$row[0];
-                $ReemplazaLetra = new ClsValidaCaracteres;
+                ReemplazaLetra = new ClsValidaCaracteres;
                 $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
                 $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
 
