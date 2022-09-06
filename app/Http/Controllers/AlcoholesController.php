@@ -14,7 +14,7 @@ class AlcoholesController extends Controller
   public $id_ejecutor;
   public $password;
   public $municipio;
-  public $id_requisito;
+  public $id_requisito
   public $id_infraccion;
   public $id_dependencia;
   public $ArrEjecutoresGuardados;
@@ -115,7 +115,7 @@ class AlcoholesController extends Controller
               }
 
 
-          return response()->json(["success"=> count($ArrEjecutoresGuardados>0), "data"=> $ArrEjecutoresGuardados], 200);
+          return response()->json(["success"=> count($ArrEjecutoresGuardados)>0, "data"=> $ArrEjecutoresGuardados], 200);
       }
       catch (Exception $e) {
 
