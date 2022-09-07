@@ -87,6 +87,7 @@ class ApiController extends Controller
     $success['name'] =  $user->name;
     $success['username'] = $user->username;
     $success['email'] = $user->email;
+    $success['id_ejecutor'] = $user->id_ejecutor;
     $success['id'] = $user->id;
 
     return $this->sendResponse($success, 'User register successfully.', 201);
