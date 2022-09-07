@@ -30,8 +30,8 @@ class UserController extends Controller
     {
       //dd(User::all());
       if ($request->ajax()) {
-        $usuarios = User::orderBy('created_at','DESC')
-        ->select('id', 'name', 'username', 'email', 'created_at', 'activo', 'origen')
+        $usuarios = User::orderBy('created_at','DESC')->where('activo',1)
+        ->select('id', 'name', 'username', 'email', 'created_at', 'activo')
           ->get();
           return datatables()->of($usuarios)
           ->addColumn('roles', function($data){
@@ -49,19 +49,20 @@ class UserController extends Controller
               }
           })
 */
-          ->addColumn('origen', function($data){
-              if ($data->origen == 1) {
-                return 'App Móvil';
-              }else{
-                return 'Web';
-              }
-          })
+          // ->addColumn('origen', function($data){
+          //     if ($data->origen == 1) {
+          //       return 'App Móvil';
+          //     }else{
+          //       return 'Web';
+          //     }
+          // })
 
           ->addColumn('action', function($data){
 
               if(Auth::user()->can('editar usuario')){
 
-                $permiso = '<a href="/dashboard/users/'.$data->id.'/edit"><i class="flaticon2-pen text-primary"></i></a>';
+                $permiso = '<a href="/dashboard/users/'.$data->id.'/edit"><i class="flaticon2-pen text-primary"></i></a> <a onclick = "borrar('.$data->id.')"><i class="flaticon2-trash  text-danger"></i></a>';
+
               }else{
                 $permiso ='';
               }
@@ -190,10 +191,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','Usario eliminado satisfactoriamente');
-    }
+     public function destroy(Request $request)
+     {
+       try {
+         $usuarios = User::find($request->id);
+         $usuarios->activo = 0;
+         $usuarios->save();
+
+         return response()->json(['success'=>'Registro Eliminado exitosamente']);
+       } catch (\Exception $e) {
+         dd($e->getMessage());
+       }
+     }
+
+    // public function destroy($id)
+    // {
+    //     User::find($id)->delete();
+    //     return redirect()->route('users.index')
+    //                     ->with('success','Usario eliminado satisfactoriamente');
+    // }
 }

@@ -58,8 +58,9 @@
 	<script src="/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
 
 	<script>
+	var table;
 	$(document).ready(function() {
-	    var table = $('#usuarios').DataTable({
+	    table = $('#usuarios').DataTable({
 	    processing: true,
 	    serverSide: true,
 	    ajax: {
@@ -96,6 +97,37 @@
 	  });
 
 	});
+
+	function borrar(id){
+		//console.log(id);
+
+		Swal.fire({
+			title: "¿Esta seguro de Eliminar el registro?",
+			text: "No se podrá revertir",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Aceptar",
+			cancelButtonText: "Cancelar"
+	}).then(function(result) {
+			if (result.value) {
+				$.ajax({
+					 type:"POST",
+					 url:"/dashboard/users/borrar",
+					 headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					 },
+					 data:{
+						 id:id,
+					 },
+						success:function(data){
+							Swal.fire("", data.success, "success").then(function(){
+								table.ajax.reload();
+							});
+						}
+				});
+			}
+	})
+	}
 	</script>
 
 @endsection

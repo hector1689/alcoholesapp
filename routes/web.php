@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +37,8 @@ Route::get('/', function () {
 
 Route::resource('/dashboard/roles', RoleController::class);
 Route::resource('/dashboard/users', UserController::class);
+Route::post('/dashboard/users/borrar', 'UserController@destroy');
+
 
 // a partir de aqui las rutas de alcoholes
 /*
