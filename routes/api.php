@@ -233,7 +233,7 @@ Route::get('/resumen/{municipio}/{id_ejecutor}', 'AlcoholesController@GetResumen
 Route::get('/historial/{id_alcoholes}', 'AlcoholesController@Gethistorial')->name('historial');
 
 
-Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequisto')->name('guardaRequisito');
+//Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequisto')->name('guardaRequisito');
 
 
 //rutas de guardado
@@ -252,6 +252,8 @@ fnFinalizaVerificacion(Request $request ) finaliza verificacion cambiando estatu
 */
 
 Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequisto')->name('guardaRequisito');
+
+Route::post('/verificacion/guardaMulta', 'AlcoholesController@fnInsertaMulta')->name('guardaMulta');
 
 Route::post('/verificacion/guardaCroquis', 'AlcoholesController@fnGrabaVerificaCroquis')->name('guardaCroquis');
 
