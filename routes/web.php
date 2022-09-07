@@ -124,6 +124,8 @@ Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequi
 
 Route::post('/verificacion/guardaCroquis', 'AlcoholesController@fnGrabaVerificaCroquis')->name('guardaCroquis');
 
+Route::post('/verificacion/cierraVerificacion', 'AlcoholesController@fnCierraVerifica')->name('cierraVerificacion');
+
 Route::post('/verificacion/guardaDetalle', 'AlcoholesController@fnGrabaMovimientosVerifica')->name('guardaDetalle');
 
 Route::post('/verificacion/guardaVerificacion', 'AlcoholesController@fnGrabaVerificacion')->name('guardaVerificacion');

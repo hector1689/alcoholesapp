@@ -545,7 +545,8 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
                 conmae_contribuyente.rfc,
                 alccat_giro.desc_tiponegocio,
                 alcmae_alcoholes.folio_licencia,
-                alcmae_alcoholes.folio_solicitud
+                alcmae_alcoholes.folio_solicitud,
+                alccat_giro.desc_tiponegocio
                 FROM alcmae_alcoholes,
                 conmae_contribuyente,
                 alccat_giro,
@@ -593,6 +594,8 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
 
                $respuesta["folio_licencia"]=$row[6];
                $respuesta["folio_solicitud"]=$row[7];
+
+               $respuesta["desc_tiponegocio"]=$row[8];
 
 
            }
@@ -1108,19 +1111,28 @@ para la pantalla adeudos registrados
 
                 oci_close($conec_muni);
 
-                $respuesta =[];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
 
                while ($row = oci_fetch_array($strSaca))
                {
-                    $respuesta["situacion"]=$row[0];
-                    $respuesta["cantidad"]=$row[1];
+                 $cuantos=$cuantos+1;                    
+
+                 $ArrGuardado["situacion"]=$row[0];
+                  $ArrGuardado["cantidad"]=$row[1];
+
+                  $ArrGuardado["fecha_debe_visitar"]=$row[3];
+
+                  $ArrGuardados[(string)$cuantos]=$ArrGuardado;
+
 
 
                }
                oci_free_statement($strSaca);
 
 
-               return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+               return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
         } //fin try
            catch (Exception $exc)
            {
@@ -1273,6 +1285,59 @@ para la pantalla adeudos registrados
     }
 
 
+    //guarda la verificacion desde la ventana del verificador que hace la verificacion
+     function fnCierraVerifica(Request $request )
+    {
+        try
+        {
+
+            $municipio=$request->municipio;
+            $id_alcoholes=$request->id_alcoholes;
+            $id_verificacion=$request->id_verificacion;
+            
+
+          $vmun=substr($id_alcoholes,0,2);
+          $Conec_Mun = new Class_Conexion;
+          $Conec_Mun->GetfnCon_Municipio($vmun);
+          $conec=$Conec_Mun->DB_conexion;
+
+           $strquery2 = "begin SIATT.SP_CIERRA_VERIFICACION('$id_alcoholes',  '$id_verificacion'); end;";
+
+                $state2 = oci_parse($conec, $strquery2) or die ('sintaxis incorrecta sp');
+                oci_execute($state2, OCI_DEFAULT) or die ('no se ejecuto sp');
+
+                if (!$state2)
+                {
+                    // Rollback the procedure
+                    oci_rollback($conec);
+                    oci_close($conec);
+                    die ("$status_msg\n");
+                }
+
+
+                oci_commit($conec);
+                oci_close($conec);
+               // header("location:nhh_preimpresion.php?nhh_folio=$vFOLIO_INTERNET&forma_pago=$vtipo_mov");
+
+                $msj_declaracion='Cerrada Correctamente';
+
+                $respuesta =[];
+
+                $respuesta["msj_declaracion"]=$msj_declaracion;
+
+        return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+
+            }
+            catch (Exception $exc)
+            {
+                oci_close($conec);
+                echo $exc->getTraceAsString();
+                return response()->json(["success"=> false, "mensaje"=> $this->mensaje], 400);
+            }
+    }
+
+
+
 
     //guarda la verificacion desde la ventana del verificador que hace la verificacion
      function fnGrabaVerificaCroquis(Request $request )
@@ -1284,10 +1349,6 @@ para la pantalla adeudos registrados
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
             $croquis=$request->croquis;
-
-
-
-
 
           $vmun=substr($id_alcoholes,0,2);
           $Conec_Mun = new Class_Conexion;
