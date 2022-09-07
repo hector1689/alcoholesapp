@@ -10,6 +10,7 @@ class AlcoholesController extends Controller
   public $id_alcoholes;
   public $vRfc;
   public $mensaje;
+  public $msj_declaracion;  
   public $respuesta;
   public $id_ejecutor;
   public $password;
@@ -1254,12 +1255,11 @@ para la pantalla adeudos registrados
                 oci_close($conec);
                // header("location:nhh_preimpresion.php?nhh_folio=$vFOLIO_INTERNET&forma_pago=$vtipo_mov");
 
-                //$msj_declaracion=$Registrar_declaracion->msj_declaracion;
+                $msj_declaracion='Verificacion Insertada Correctamente';
 
                 $respuesta =[];
 
-
-            $respuesta["msj_declaracion"]=$msj_declaracion;
+                $respuesta["msj_declaracion"]=$msj_declaracion;
 
         return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
 
@@ -1313,12 +1313,11 @@ para la pantalla adeudos registrados
                 oci_close($conec);
                // header("location:nhh_preimpresion.php?nhh_folio=$vFOLIO_INTERNET&forma_pago=$vtipo_mov");
 
-                //$msj_declaracion=$Registrar_declaracion->msj_declaracion;
+                $msj_declaracion='Croquis actualizado Correctamente';
 
                 $respuesta =[];
 
-
-            $respuesta["msj_declaracion"]=$msj_declaracion;
+                $respuesta["msj_declaracion"]=$msj_declaracion;
 
         return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
 
@@ -1368,12 +1367,11 @@ para la pantalla adeudos registrados
                 oci_close($conec);
                // header("location:nhh_preimpresion.php?nhh_folio=$vFOLIO_INTERNET&forma_pago=$vtipo_mov");
 
-                //$msj_declaracion=$Registrar_declaracion->msj_declaracion;
+                $msj_declaracion='Actualizado Correctamente';
 
                 $respuesta =[];
 
-
-            //$respuesta["msj_declaracion"]=$msj_declaracion;
+                $respuesta["msj_declaracion"]=$msj_declaracion;
 
         return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
 
@@ -1427,12 +1425,11 @@ para la pantalla adeudos registrados
                 oci_close($conec);
                // header("location:nhh_preimpresion.php?nhh_folio=$vFOLIO_INTERNET&forma_pago=$vtipo_mov");
 
-                //$msj_declaracion=$Registrar_declaracion->msj_declaracion;
+                $msj_declaracion='Movimiento Insertado Correctamente';
 
                 $respuesta =[];
 
-
-           // $respuesta["msj_declaracion"]=$msj_declaracion;
+                $respuesta["msj_declaracion"]=$msj_declaracion;
 
         return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
 
@@ -1541,10 +1538,11 @@ para la pantalla adeudos registrados
                 oci_commit($conec);
                 oci_close($conec);
 
-              $respuesta =[];
+             $msj_declaracion=' Requisito Insertado Correctamente';
 
+                $respuesta =[];
 
-            $respuesta["msj_declaracion"]=$msj_declaracion;
+                $respuesta["msj_declaracion"]=$msj_declaracion;
 
             return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
 
