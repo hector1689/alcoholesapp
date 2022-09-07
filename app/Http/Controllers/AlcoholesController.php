@@ -1283,7 +1283,6 @@ para la pantalla adeudos registrados
             $municipio=$request->municipio;
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
-
             $croquis=$request->croquis;
 
 
@@ -1516,7 +1515,10 @@ para la pantalla adeudos registrados
             $fecha_documento=$request->fecha_documento;
             $ejercicio_fiscal=$request->ejercicio_fiscal;
 
-            $vmun=substr($municipio);
+           // $vmun=substr($municipio);
+
+            $vmun=substr($id_alcoholes,0,2);
+
             $Conec_Mun = new Class_Conexion;
             $Conec_Mun->GetfnCon_Municipio($vmun);
             $conec=$Conec_Mun->DB_conexion;
