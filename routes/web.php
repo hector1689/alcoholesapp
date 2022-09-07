@@ -100,7 +100,7 @@ Route::get('/resumen/{municipio}/{id_ejecutor}', 'AlcoholesController@GetResumen
 Route::get('/historial/{id_alcoholes}', 'AlcoholesController@Gethistorial')->name('historial');
 
 
-Route::post('/verificacion/guardaRequisito', 'FinanzasController@fnInsertaRequisto')->name('guardaRequisito');
+Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequisto')->name('guardaRequisito');
 
 
 //rutas de guardado
@@ -118,15 +118,15 @@ fnInsertaRequisto(Request $request ) inserta un nuevo requisito
 fnFinalizaVerificacion(Request $request ) finaliza verificacion cambiando estatus a completada pantalla verificaciones_negocio_1
 */
 
-Route::post('/verificacion/guardaRequisito', 'FinanzasController@fnInsertaRequisto')->name('guardaRequisito');
+Route::post('/verificacion/guardaRequisito', 'AlcoholesController@fnInsertaRequisto')->name('guardaRequisito');
 
-Route::post('/verificacion/guardaCroquis', 'FinanzasController@fnGrabaVerificaCroquis')->name('guardaCroquis');
+Route::post('/verificacion/guardaCroquis', 'AlcoholesController@fnGrabaVerificaCroquis')->name('guardaCroquis');
 
-Route::post('/verificacion/guardaDetalle', 'FinanzasController@fnGrabaMovimientosVerifica')->name('guardaDetalle');
+Route::post('/verificacion/guardaDetalle', 'AlcoholesController@fnGrabaMovimientosVerifica')->name('guardaDetalle');
 
-Route::post('/verificacion/guardaVerificacion', 'FinanzasController@fnGrabaVerificacion')->name('guardaVerificacion');
+Route::post('/verificacion/guardaVerificacion', 'AlcoholesController@fnGrabaVerificacion')->name('guardaVerificacion');
 
-Route::post('/verificacion/FinalizaVerificacion', 'FinanzasController@fnFinalizaVerificacion')->name('FinalizaVerificacion');
+Route::post('/verificacion/FinalizaVerificacion', 'AlcoholesController@fnFinalizaVerificacion')->name('FinalizaVerificacion');
 
 
 //
