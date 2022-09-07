@@ -20,14 +20,14 @@ Route::get('test', function(){
     helperPrueba();
 });
 
-Route::get('/negocios/{rfc}/{tipoObligacion}/{cuenta}', 'FinanzasController@GetfnImprimeDatos');
+Route::get('/negocios/{rfc}/{tipoObligacion}/{cuenta}', 'AlchoholesController@GetfnImprimeDatos');
 
-Route::get('/negocios/{id_negocio}', 'FinanzasController@GetObtieneSubsidio');
+Route::get('/negocios/{id_negocio}', 'AlchoholesController@GetObtieneSubsidio');
 
-Route::get('/negocios/historial/{id_negocio}/{tipoObligacion}/{ej_fiscal}', 'FinanzasController@Gethistorial');
+Route::get('/negocios/historial/{id_negocio}/{tipoObligacion}/{ej_fiscal}', 'AlchoholesController@Gethistorial');
 
 //para guardar en ingresos
-Route::post('/pruebas/guarda/{vnum_empleados}/{msj_N_hab_emp}/{msj_declaracion}/{msjnombre}/{mensaje_email}/{msjtel}/{mensaje_fecha}/{vtipo_mov}/{email}/{telefono}/{nombre_contacto}/{Total_a_Pagar}/{vtipoCom_sel}/{vddl_obl_sel}/{vtipo_dec}/{vfecha}/{txtTotalPagar}/{vmes_sel}/{vanio_sel}/{txtImporte_Pagar}/{txtRecargos}/{txtMultas}/{txtSaldo_Pendiente}/{txtImporte_Declaracion}/{txtActualizacion}/{txtImpuestoCargo}/{txtImpuestoFavor}/{vnum_asimilables}/{vnum_otros}/{msjEmpSubcontratados}/{msjRFCEmpresa}/{vrbmotivo}/{msjcel}/{celular}', 'FinanzasController@SetfnGuarda_datos_Declaracion');
+Route::post('/pruebas/guarda/{vnum_empleados}/{msj_N_hab_emp}/{msj_declaracion}/{msjnombre}/{mensaje_email}/{msjtel}/{mensaje_fecha}/{vtipo_mov}/{email}/{telefono}/{nombre_contacto}/{Total_a_Pagar}/{vtipoCom_sel}/{vddl_obl_sel}/{vtipo_dec}/{vfecha}/{txtTotalPagar}/{vmes_sel}/{vanio_sel}/{txtImporte_Pagar}/{txtRecargos}/{txtMultas}/{txtSaldo_Pendiente}/{txtImporte_Declaracion}/{txtActualizacion}/{txtImpuestoCargo}/{txtImpuestoFavor}/{vnum_asimilables}/{vnum_otros}/{msjEmpSubcontratados}/{msjRFCEmpresa}/{vrbmotivo}/{msjcel}/{celular}', 'AlchoholesController@SetfnGuarda_datos_Declaracion');
 
 
 
@@ -233,7 +233,7 @@ Route::get('/resumen/{municipio}/{id_ejecutor}', 'AlcoholesController@GetResumen
 Route::get('/historial/{id_alcoholes}', 'AlcoholesController@Gethistorial')->name('historial');
 
 
-Route::post('/verificacion/guardaRequisito', 'FinanzasController@fnInsertaRequisto')->name('guardaRequisito');
+Route::post('/verificacion/guardaRequisito', 'AlchoholesController@fnInsertaRequisto')->name('guardaRequisito');
 
 
 //rutas de guardado
@@ -251,15 +251,15 @@ fnInsertaRequisto(Request $request ) inserta un nuevo requisito
 fnFinalizaVerificacion(Request $request ) finaliza verificacion cambiando estatus a completada pantalla verificaciones_negocio_1
 */
 
-Route::post('/verificacion/guardaRequisito', 'FinanzasController@fnInsertaRequisto')->name('guardaRequisito');
+Route::post('/verificacion/guardaRequisito', 'AlchoholesController@fnInsertaRequisto')->name('guardaRequisito');
 
-Route::post('/verificacion/guardaCroquis', 'FinanzasController@fnGrabaVerificaCroquis')->name('guardaCroquis');
+Route::post('/verificacion/guardaCroquis', 'AlchoholesController@fnGrabaVerificaCroquis')->name('guardaCroquis');
 
-Route::post('/verificacion/guardaDetalle', 'FinanzasController@fnGrabaMovimientosVerifica')->name('guardaDetalle');
+Route::post('/verificacion/guardaDetalle', 'AlchoholesController@fnGrabaMovimientosVerifica')->name('guardaDetalle');
 
-Route::post('/verificacion/guardaVerificacion', 'FinanzasController@fnGrabaVerificacion')->name('guardaVerificacion');
+Route::post('/verificacion/guardaVerificacion', 'AlchoholesController@fnGrabaVerificacion')->name('guardaVerificacion');
 
-Route::post('/verificacion/FinalizaVerificacion', 'FinanzasController@fnFinalizaVerificacion')->name('FinalizaVerificacion');
+Route::post('/verificacion/FinalizaVerificacion', 'AlchoholesController@fnFinalizaVerificacion')->name('FinalizaVerificacion');
 
 
 //
