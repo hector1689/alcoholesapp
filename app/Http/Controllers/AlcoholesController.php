@@ -630,7 +630,8 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
           $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
           $conec_muni=$Conec_Muni->DB_conexion;
 
-          $str_verifica_datos = oci_parse($conec_muni," SELECT conmae_contribuyente.nombre_completo,
+          $str_verifica_datos = oci_parse($conec_muni," SELECT 
+            conmae_contribuyente.nombre_completo,
                 alcmae_alcoholes.nombre_comercial,
                 alcmae_alcoholes.cuenta_estatal,
                 conmae_contribuyente.rfc,
@@ -695,34 +696,32 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
 
                 $respuesta["cuenta_estatal"]=$row[2];
                 $vrfc=$respuesta["rfc"]=$row[3];
-                $respuesta["id_situacion"]=$row[4];
-
-                $respuesta["calle"]=$row[5];
-                $respuesta["num_exterior"]=$row[6];
-                $respuesta["num_interior"]=$row[7];
+                $respuesta["calle"]=$row[4];
+                $respuesta["num_exterior"]=$row[5];
+                $respuesta["num_interior"]=$row[6];
 
                 $ReemplazaLetra = new ClsValidaCaracteres;
-                $ReemplazaLetra->fnReemplazaLetra(trim($row[8]));
+                $ReemplazaLetra->fnReemplazaLetra(trim($row[7]));
                 $respuesta["entre_calle"]=$ReemplazaLetra->Variable;
 
                 $ReemplazaLetra = new ClsValidaCaracteres;
-                $ReemplazaLetra->fnReemplazaLetra(trim($row[9]));
+                $ReemplazaLetra->fnReemplazaLetra(trim($row[8]));
                 $respuesta["yla_calle"]=$ReemplazaLetra->Variable;
 
-                $respuesta["desc_colonia"]=$row[10];
-                $respuesta["desc_municipio"]=$row[11];
+                $respuesta["desc_colonia"]=$row[9];
+                $respuesta["desc_municipio"]=$row[10];
 
                 $ReemplazaLetra = new ClsValidaCaracteres;
-                $ReemplazaLetra->fnReemplazaLetra(trim($row[12]));
+                $ReemplazaLetra->fnReemplazaLetra(trim($row[11]));
                 $respuesta["desc_tiponegocio"]=$ReemplazaLetra->Variable;
 
-                $respuesta["desc_localidad"]=$row[13];
-                $respuesta["folio_licencia"]=$row[14];
-                $respuesta["fecha_inicio_op"]=$row[15];
-                $respuesta["fecha_baja"]=$row[16];
-                $respuesta["id_contribuyente"]=$row[17];
-                $respuesta["folio_solicitud"]=$row[18];
-                $respuesta["desc_situacion"]=$row[19];
+                $respuesta["desc_localidad"]=$row[12];
+                $respuesta["folio_licencia"]=$row[13];
+                $respuesta["fecha_inicio_op"]=$row[14];
+                $respuesta["fecha_baja"]=$row[15];
+                $respuesta["id_contribuyente"]=$row[16];
+                $respuesta["folio_solicitud"]=$row[17];
+                $respuesta["desc_situacion"]=$row[18];
             }
 
           oci_free_statement($str_verifica_datos);
