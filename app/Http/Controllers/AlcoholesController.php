@@ -55,6 +55,8 @@ class AlcoholesController extends Controller
     ----prceso de almacenado
       fnGrabaVerificacion(Request $request ) funcion que guarda la verificacion proxima a realizar por parte del supervisor
 
+
+
       fnGrabaVerificaCroquis(Request $request ) graba croquis de la verificacion
 
       fnGrabaMovimientosVerifica(Request $request ) graba las mediciones realizadas en la verificacion
@@ -955,6 +957,7 @@ para la pantalla adeudos registrados
               $conec_muni=$Conec_Muni->DB_conexion;
 
               $strSaca=oci_parse($conec_muni, " SELECT
+                b.id_alcoholes,
                 C.NOMBRE_COMPLETO,
                 B.NOMBRE_COMERCIAL,
                 A.FECHA_DEBE_VISITAR
@@ -979,14 +982,16 @@ para la pantalla adeudos registrados
                while ($row = oci_fetch_array($strSaca))
                {
                  $cuantos=$cuantos+1;
-                   $ReemplazaLetra = new ClsValidaCaracteres;
-                    $ReemplazaLetra->fnReemplazaLetra(trim($row[0]));
-                    $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
 
-                    $ReemplazaLetra = new ClsValidaCaracteres;
-                    $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-                    $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
-                   $ArrGuardado["fecha_debe_visitar"]=$row[2];
+                  $ArrGuardado["id_alcoholes"]=$row[0];
+                   $ReemplazaLetra = new ClsValidaCaracteres;
+                   $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
+                   $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
+
+                   $ReemplazaLetra = new ClsValidaCaracteres;
+                   $ReemplazaLetra->fnReemplazaLetra(trim($row[2]));
+                   $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
+                   $ArrGuardado["fecha_debe_visitar"]=$row[3];
                    $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
@@ -1018,6 +1023,7 @@ para la pantalla adeudos registrados
               $conec_muni=$Conec_Muni->DB_conexion;
 
               $strSaca=oci_parse($conec_muni, " SELECT
+                b.id_alcoholes,
                 C.NOMBRE_COMPLETO,
                 B.NOMBRE_COMERCIAL,
                 A.FECHA_DEBE_VISITAR
@@ -1042,14 +1048,17 @@ para la pantalla adeudos registrados
                while ($row = oci_fetch_array($strSaca))
                {
                  $cuantos=$cuantos+1;
+
+
+                 $ArrGuardado["id_alcoholes"]=$row[0];
                    $ReemplazaLetra = new ClsValidaCaracteres;
-                    $ReemplazaLetra->fnReemplazaLetra(trim($row[0]));
+                    $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
                     $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
 
                     $ReemplazaLetra = new ClsValidaCaracteres;
-                    $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
+                    $ReemplazaLetra->fnReemplazaLetra(trim($row[2]));
                     $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
-                   $ArrGuardado["fecha_debe_visitar"]=$row[2];
+                   $ArrGuardado["fecha_debe_visitar"]=$row[3];
 
                     $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
@@ -1088,7 +1097,9 @@ para la pantalla adeudos registrados
                 FROM  SIATT.ALCMAE_VERIFICACION A , GRLCAT_SITUACION  B
                 WHERE   A. ID_SITUACION =B.ID_SITUACION
                 AND  A.ID_EJECUTOR = '$id_ejecutor'
-                and  A.fecha_debe_visitar between '$fecha_inicio' and '$fecha_fin'
+                and  A.fecha_debe_visitar
+                between TO_DATE( '$fecha_inicio','YYYY-MM-DD')   AND TO_DATE('$fecha_fin','YYYY-MM-DD')
+                --between '$fecha_inicio' and '$fecha_fin'
                 GROUP BY B.DESC_SITUACION ");
 
 
