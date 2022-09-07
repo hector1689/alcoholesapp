@@ -87,8 +87,6 @@ class ApiController extends Controller
     $success['name'] =  $user->name;
     $success['username'] = $user->username;
     $success['email'] = $user->email;
-    $success['id_ejecutor'] = $user->id_ejecutor;
-    $success['id_supervisor'] = $user->id_supervisor;
     $success['id'] = $user->id;
 
     return $this->sendResponse($success, 'User register successfully.', 201);
@@ -107,6 +105,8 @@ class ApiController extends Controller
       $success['username'] = $user->username;
       $success['email'] = $user->email;
       $success['id'] = $user->id;
+      $success['id_ejecutor'] = $user->id_ejecutor;
+      $success['id_supervisor'] = $user->id_supervisor;
 
       return $this->sendResponse($success, 'Login correcto.');
     }
