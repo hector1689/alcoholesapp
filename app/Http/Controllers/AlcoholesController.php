@@ -1523,7 +1523,8 @@ para la pantalla adeudos registrados
             $Conec_Mun->GetfnCon_Municipio($vmun);
             $conec=$Conec_Mun->DB_conexion;
 
-           $strquery2 = "begin SIATT.SP_INSERTA_REQUISITO('$id_alcoholes',  '$id_requisito','$folio_documento', $fecha_documento',$ejercicio_fiscal); end;";
+           $strquery2 = "begin SIATT.SP_INSERTA_REQUISITO('$id_alcoholes', 
+            '$id_requisito','$folio_documento', '$fecha_documento','$ejercicio_fiscal'); end;";
 
                 $state2 = oci_parse($conec, $strquery2) or die ('sintaxis incorrecta sp');
                 oci_execute($state2, OCI_DEFAULT) or die ('no se ejecuto sp');
