@@ -1189,7 +1189,7 @@ para la pantalla adeudos registrados
 
                while ($row = oci_fetch_array($str_Historial))
                {
-                 $cuantos=$cuantos+1; 
+                 $cuantos=$cuantos+1;
 
                 $ArrGuardado["id_alcoholes"]=$row[0];
                 $ReemplazaLetra = new ClsValidaCaracteres;
@@ -1210,7 +1210,7 @@ para la pantalla adeudos registrados
               $ArrGuardado["desc_tipo_negocio"]=$row[9];
               $ArrGuardado["folio_licencia"]=$row[10];
               $ArrGuardado["situacion"]=$row[11];
-              
+
               $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
             }
@@ -1380,7 +1380,7 @@ para la pantalla adeudos registrados
             //dd($dir, $file, $nombre);
 
 
-              $nombreimagen = $croquis->getClientOriginalName();
+              $nombreimagen = time().$croquis->getClientOriginalName();
               $croquis->move(public_path().'/storage/croquis/',$nombreimagen);
 
 
