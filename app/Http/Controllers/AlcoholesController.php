@@ -1360,8 +1360,8 @@ para la pantalla adeudos registrados
             // list($imagen_fierro,$imagen_guardar) = explode(',', $request->croquis);
             // $imagen_deco = base64_decode($imagen_guardar);
 
-            $dir = "ms018/imagenes";
-            $file = $croquis; // Illuminate\Http\UploadedFile
+            //$dir = "ms018/imagenes";
+            //$file = $croquis; // Illuminate\Http\UploadedFile
 
             // $contenidoBinario = addslashes(file_get_contents($file));
             //
@@ -1375,23 +1375,28 @@ para la pantalla adeudos registrados
             // $imagenComoBase64 = base64_decode($contenidoBinario);
             //dd($imagenComoBase64);
             //dd($file);
-            $nombre = $croquis->getClientOriginalName(); // foto.png
-            //dd($nombre);
+            //$nombre = $croquis->getClientOriginalName(); // foto.png
+
+            //dd($dir, $file, $nombre);
 
 
-            $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
-            dd($imagen_sugerida);
-
-            $url = "https://staticstam.tamaulipas.gob.mx:9000/minio/sitam/".$imagen_sugerida;
+              $nombreimagen = $croquis->getClientOriginalName();
+              $croquis->move(public_path().'/storage/croquis/',$nombreimagen);
 
 
-            dd($url);
+            // $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            // dd($imagen_sugerida);
+            //
+            // $url = "https://staticstam.tamaulipas.gob.mx:9000/minio/sitam/".$imagen_sugerida;
+            //
+
+            //dd($nombreimagen);
             $vmun=substr($id_alcoholes,0,2);
             $Conec_Mun = new Class_Conexion;
             $Conec_Mun->GetfnCon_Municipio($vmun);
             $conec=$Conec_Mun->DB_conexion;
 
-           $strquery2 = "begin SIATT.SP_GRABA_VERIFICACION_CROQUIS('$id_alcoholes',  '$id_verificacion','$croquis'); end;";
+           $strquery2 = "begin SIATT.SP_GRABA_VERIFICACION_CROQUIS('$id_alcoholes',  '$id_verificacion','$nombreimagen'); end;";
 
                 $state2 = oci_parse($conec, $strquery2) or die ('sintaxis incorrecta sp');
                 oci_execute($state2, OCI_DEFAULT) or die ('no se ejecuto sp');
