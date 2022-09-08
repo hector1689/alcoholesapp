@@ -28,6 +28,7 @@
 						</g>
 					</svg><!--end::Svg Icon--></span>	Nuevo usuario
 				</a>
+				<!-- <a onclick="agregarusuarios()">agregar usuarios</a> -->
 				<!--end::Button-->
 		</div>
 		<div class="card-body">
@@ -127,6 +128,26 @@
 				});
 			}
 	})
+	}
+
+	function agregarusuarios(){
+		id = 1;
+		$.ajax({
+			 type:"POST",
+			 url:"/dashboard/users/agregarusuarios",
+			 headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			 },
+			 data:{
+				 id:id,
+			 },
+				success:function(data){
+					console.log(data)
+					// Swal.fire("", data.success, "success").then(function(){
+					//
+					// });
+				}
+		});
 	}
 	</script>
 

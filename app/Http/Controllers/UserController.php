@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UsuariosVerificadores;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -30,7 +31,7 @@ class UserController extends Controller
     {
       //dd(User::all());
       if ($request->ajax()) {
-        $usuarios = User::orderBy('created_at','DESC')->where('activo',1)
+        $usuarios = User::orderBy('created_at','ASC')->where('activo',1)
         ->select('id', 'name', 'username', 'email', 'created_at', 'activo')
           ->get();
           return datatables()->of($usuarios)
@@ -111,18 +112,48 @@ class UserController extends Controller
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+        
 
         $user = User::create($input);
         $user->assignRole($request->roles);
 
 
-        $usuario = User::find($user->id);
-        $usuario->origen = 0;
-        $usuario->save();
+        // $usuario = User::find($user->id);
+        // $usuario->origen = 0;
+        // $usuario->save();
 
         return redirect()->route('users.index')
                         ->with('success','Usuario creado satisfactoriamente');
     }
+
+    public function nuevosUsuarios(Request $request){
+
+        $verificadores = UsuariosVerificadores::all();
+        $i=1;
+        foreach ($verificadores as $key => $value) {
+          // code...
+
+          $rol = 'verificador';
+          $usuario_name = 'verificador'.$i;
+          $email = $usuario_name.'@gmail.com';
+          //dd($value['PASSWORD']);
+          $usuario = new User();
+          $usuario->name = $value['NOMBRE_EJECUTOR'];
+          $usuario->username = $usuario_name;
+          $usuario->email = $email;
+          $usuario->password =  Hash::make($value['PASSWORD']);
+          $usuario->password_name = $value['PASSWORD'];
+          $usuario->id_ejecutor = $value['ID_EJECUTOR'];
+          $usuario->assignRole($rol);
+          $usuario->save();
+
+          $i++;
+        }
+
+
+
+    }
+
 
     /**
      * Display the specified resource.

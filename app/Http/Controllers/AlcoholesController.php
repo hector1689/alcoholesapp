@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 //use app\Http\Controllers\ConexionController;
-
+use App\Models\UsuariosVerificadores;
+use Storage;
 class AlcoholesController extends Controller
 {
   public $id_alcoholes;
   public $vRfc;
   public $mensaje;
-  public $msj_declaracion;  
+  public $msj_declaracion;
   public $respuesta;
   public $id_ejecutor;
   public $password;
@@ -630,7 +631,7 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
           $Conec_Muni->GetfnCon_Municipio($vIdMuniConec);
           $conec_muni=$Conec_Muni->DB_conexion;
 
-          $str_verifica_datos = oci_parse($conec_muni," SELECT 
+          $str_verifica_datos = oci_parse($conec_muni," SELECT
             conmae_contribuyente.nombre_completo,
                 alcmae_alcoholes.nombre_comercial,
                 alcmae_alcoholes.cuenta_estatal,
@@ -1116,12 +1117,12 @@ para la pantalla adeudos registrados
 
                while ($row = oci_fetch_array($strSaca))
                {
-                 $cuantos=$cuantos+1;                    
+                 $cuantos=$cuantos+1;
 
                  $ArrGuardado["situacion"]=$row[0];
                   $ArrGuardado["cantidad"]=$row[1];
 
-                  
+
 
                   $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
@@ -1300,7 +1301,7 @@ para la pantalla adeudos registrados
             $municipio=$request->municipio;
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
-            
+
 
           $vmun=substr($id_alcoholes,0,2);
           $Conec_Mun = new Class_Conexion;
@@ -1350,16 +1351,45 @@ para la pantalla adeudos registrados
     {
         try
         {
-
+            //dd($request->all());
             $municipio=$request->municipio;
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
             $croquis=$request->croquis;
 
-          $vmun=substr($id_alcoholes,0,2);
-          $Conec_Mun = new Class_Conexion;
-          $Conec_Mun->GetfnCon_Municipio($vmun);
-          $conec=$Conec_Mun->DB_conexion;
+            // list($imagen_fierro,$imagen_guardar) = explode(',', $request->croquis);
+            // $imagen_deco = base64_decode($imagen_guardar);
+
+            $dir = "ms018/imagenes";
+            $file = $croquis; // Illuminate\Http\UploadedFile
+
+            // $contenidoBinario = addslashes(file_get_contents($file));
+            //
+            // $usuario = new UsuariosVerificadores();
+            // $usuario->NOMBRE_EJECUTOR = 'ihih';
+            // $usuario->ID_EJECUTOR = '233';
+            // $usuario->PASSWORD = 'w11';
+            // $usuario->img = $contenidoBinario;
+            // $usuario->save();
+            // //dd($usuario);
+            // $imagenComoBase64 = base64_decode($contenidoBinario);
+            //dd($imagenComoBase64);
+            //dd($file);
+            $nombre = $croquis->getClientOriginalName(); // foto.png
+            //dd($nombre);
+
+
+            $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            dd($imagen_sugerida);
+
+            $url = "https://staticstam.tamaulipas.gob.mx:9000/minio/sitam/".$imagen_sugerida;
+
+
+            dd($url);
+            $vmun=substr($id_alcoholes,0,2);
+            $Conec_Mun = new Class_Conexion;
+            $Conec_Mun->GetfnCon_Municipio($vmun);
+            $conec=$Conec_Mun->DB_conexion;
 
            $strquery2 = "begin SIATT.SP_GRABA_VERIFICACION_CROQUIS('$id_alcoholes',  '$id_verificacion','$croquis'); end;";
 
@@ -1590,7 +1620,7 @@ para la pantalla adeudos registrados
             $Conec_Mun->GetfnCon_Municipio($vmun);
             $conec=$Conec_Mun->DB_conexion;
 
-           $strquery2 = "begin SIATT.SP_INSERTA_REQUISITO('$id_alcoholes', 
+           $strquery2 = "begin SIATT.SP_INSERTA_REQUISITO('$id_alcoholes',
             '$id_requisito','$folio_documento', '$fecha_documento','$ejercicio_fiscal'); end;";
 
                 $state2 = oci_parse($conec, $strquery2) or die ('sintaxis incorrecta sp');
