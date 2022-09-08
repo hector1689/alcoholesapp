@@ -1353,12 +1353,16 @@ para la pantalla adeudos registrados
             // $imagen_deco = base64_decode($imagen_guardar);
 
             $dir = "ms018/imagenes";
-            $file = $request->croquis; // Illuminate\Http\UploadedFile
-            $nombre = 'archivo1'; // foto.png
-            //$imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            $file = $croquis; // Illuminate\Http\UploadedFile
+            //dd($file->getClientOriginalName());
+            $nombre = $croquis->getClientOriginalName(); // foto.png
+            $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            //dd($imagen_sugerida);
 
-            $imagen_sugerida = \Storage::disk('staticstam')->push($nombre, file_get_contents($file));
-            dd($imagen_sugerida);
+            $url = "https://staticstam.tamaulipas.gob.mx:9000/" . getenv("AWS_BUCKET")."/".$imagen_sugerida;
+
+
+            dd($url);
             $vmun=substr($id_alcoholes,0,2);
             $Conec_Mun = new Class_Conexion;
             $Conec_Mun->GetfnCon_Municipio($vmun);
