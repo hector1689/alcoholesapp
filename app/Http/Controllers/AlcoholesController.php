@@ -1121,7 +1121,7 @@ para la pantalla adeudos registrados
                  $ArrGuardado["situacion"]=$row[0];
                   $ArrGuardado["cantidad"]=$row[1];
 
-                  $ArrGuardado["fecha_debe_visitar"]=$row[3];
+                  
 
                   $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
