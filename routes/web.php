@@ -38,6 +38,7 @@ Route::get('/', function () {
 Route::resource('/dashboard/roles', RoleController::class);
 Route::resource('/dashboard/users', UserController::class);
 Route::post('/dashboard/users/borrar', 'UserController@destroy');
+Route::post('/dashboard/users/agregarusuarios', 'UserController@nuevosUsuarios');
 
 
 // a partir de aqui las rutas de alcoholes
