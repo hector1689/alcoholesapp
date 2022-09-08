@@ -1182,34 +1182,41 @@ para la pantalla adeudos registrados
           oci_execute($str_Historial);
           oci_close($conec_mun);
 
-          $respuesta =[];
-          while ($row = oci_fetch_array($str_Historial))
-          {
-                $respuesta["id_alcoholes"]=$row[0];
+                $ArrGuardado=array();
+                $ArrGuardados =array();
+                $cuantos=0;
+
+               while ($row = oci_fetch_array($str_Historial))
+               {
+                 $cuantos=$cuantos+1; 
+
+                $ArrGuardado["id_alcoholes"]=$row[0];
                 $ReemplazaLetra = new ClsValidaCaracteres;
                 $ReemplazaLetra->fnReemplazaLetra(trim($row[1]));
-                $respuesta["nombre_completo"]=$ReemplazaLetra->Variable;
+                $ArrGuardado["nombre_completo"]=$ReemplazaLetra->Variable;
 
 
                 $ReemplazaLetra = new ClsValidaCaracteres;
                 $ReemplazaLetra->fnReemplazaLetra(trim($row[2]));
-                $respuesta["nombre_comercial"]=$ReemplazaLetra->Variable;
+                $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
 
-              $respuesta["cuenta_estatal"]=$row[3];
-              $respuesta["rfc"]=$row[4];
-              $respuesta["dias_semana"]=$row[5];
-              $respuesta["horario_semana"]=$row[6];
-              $respuesta["fin_semana"]=$row[7];
-              $respuesta["horario_fin_semana"]=$row[8];
-              $respuesta["desc_tipo_negocio"]=$row[9];
-              $respuesta["folio_licencia"]=$row[10];
-              $respuesta["situacion"]=$row[11];
+              $ArrGuardado["cuenta_estatal"]=$row[3];
+              $ArrGuardado["rfc"]=$row[4];
+              $ArrGuardado["dias_semana"]=$row[5];
+              $ArrGuardado["horario_semana"]=$row[6];
+              $ArrGuardado["fin_semana"]=$row[7];
+              $ArrGuardado["horario_fin_semana"]=$row[8];
+              $ArrGuardado["desc_tipo_negocio"]=$row[9];
+              $ArrGuardado["folio_licencia"]=$row[10];
+              $ArrGuardado["situacion"]=$row[11];
+
+              $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
             }
 
           oci_free_statement($str_Historial);
 
-          return response()->json(["success"=> count($respuesta)>0, "data"=> $respuesta], 200);
+          return response()->json(["success"=> count($ArrGuardados)>0, "data"=> $ArrGuardados], 200);
 
         }
 
