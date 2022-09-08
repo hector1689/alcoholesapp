@@ -1343,7 +1343,7 @@ para la pantalla adeudos registrados
     {
         try
         {
-            //dd($request->all());
+            dd($request->all());
             $municipio=$request->municipio;
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
