@@ -1355,7 +1355,9 @@ para la pantalla adeudos registrados
             $dir = "ms018/imagenes";
             $file = $request->croquis; // Illuminate\Http\UploadedFile
             $nombre = 'archivo1'; // foto.png
-            $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            //$imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+
+            $imagen_sugerida = \Storage::disk('staticstam')->push($nombre, file_get_contents($file));
             dd($imagen_sugerida);
             $vmun=substr($id_alcoholes,0,2);
             $Conec_Mun = new Class_Conexion;
