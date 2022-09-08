@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 //use app\Http\Controllers\ConexionController;
+use App\Models\UsuariosVerificadores;
 use Storage;
 class AlcoholesController extends Controller
 {
@@ -1354,13 +1355,27 @@ para la pantalla adeudos registrados
 
             $dir = "ms018/imagenes";
             $file = $croquis; // Illuminate\Http\UploadedFile
-            //dd($file->getClientOriginalName());
+
+            // $contenidoBinario = addslashes(file_get_contents($file));
+            //
+            // $usuario = new UsuariosVerificadores();
+            // $usuario->NOMBRE_EJECUTOR = 'ihih';
+            // $usuario->ID_EJECUTOR = '233';
+            // $usuario->PASSWORD = 'w11';
+            // $usuario->img = $contenidoBinario;
+            // $usuario->save();
+            // //dd($usuario);
+            // $imagenComoBase64 = base64_decode($contenidoBinario);
+            //dd($imagenComoBase64);
+            //dd($file);
             $nombre = $croquis->getClientOriginalName(); // foto.png
             //dd($nombre);
+
+
             $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
             dd($imagen_sugerida);
 
-            $url = "https://staticstam.tamaulipas.gob.mx:9000/" . getenv("AWS_BUCKET")."/".$imagen_sugerida;
+            $url = "https://staticstam.tamaulipas.gob.mx:9000/minio/sitam/".$imagen_sugerida;
 
 
             dd($url);

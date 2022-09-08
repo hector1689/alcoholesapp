@@ -11,6 +11,7 @@ class UsuariosVerificadores extends Model{
     "NOMBRE_EJECUTOR",
     "ID_EJECUTOR",
     "PASSWORD",
+    "img",
   ];
 
 
