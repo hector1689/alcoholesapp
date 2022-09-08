@@ -140,7 +140,7 @@ class UserController extends Controller
           $usuario->name = $value['NOMBRE_EJECUTOR'];
           $usuario->username = $usuario_name;
           $usuario->email = $email;
-          $usuario->password = bcrypt($value['PASSWORD']);
+          $usuario->password =  Hash::make($input['password']);
           $usuario->id_ejecutor = $value['ID_EJECUTOR'];
           $usuario->assignRole($rol);
           $usuario->save();

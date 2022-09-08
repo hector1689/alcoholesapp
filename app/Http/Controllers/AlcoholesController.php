@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 //use app\Http\Controllers\ConexionController;
-
+use Storage;
 class AlcoholesController extends Controller
 {
   public $id_alcoholes;
@@ -1349,15 +1349,20 @@ para la pantalla adeudos registrados
             $id_verificacion=$request->id_verificacion;
             $croquis=$request->croquis;
 
-            list($imagen_fierro,$imagen_guardar) = explode(',', $request->croquis);
-            $imagen_deco = base64_decode($imagen_guardar);
+            // list($imagen_fierro,$imagen_guardar) = explode(',', $request->croquis);
+            // $imagen_deco = base64_decode($imagen_guardar);
 
-          $vmun=substr($id_alcoholes,0,2);
-          $Conec_Mun = new Class_Conexion;
-          $Conec_Mun->GetfnCon_Municipio($vmun);
-          $conec=$Conec_Mun->DB_conexion;
+            $dir = "ms018/imagenes";
+            $file = $request->croquis; // Illuminate\Http\UploadedFile
+            $nombre = 'archivo1'; // foto.png
+            $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
+            dd($imagen_sugerida);
+            $vmun=substr($id_alcoholes,0,2);
+            $Conec_Mun = new Class_Conexion;
+            $Conec_Mun->GetfnCon_Municipio($vmun);
+            $conec=$Conec_Mun->DB_conexion;
 
-           $strquery2 = "begin SIATT.SP_GRABA_VERIFICACION_CROQUIS('$id_alcoholes',  '$id_verificacion','$imagen_deco'); end;";
+           $strquery2 = "begin SIATT.SP_GRABA_VERIFICACION_CROQUIS('$id_alcoholes',  '$id_verificacion','$croquis'); end;";
 
                 $state2 = oci_parse($conec, $strquery2) or die ('sintaxis incorrecta sp');
                 oci_execute($state2, OCI_DEFAULT) or die ('no se ejecuto sp');
