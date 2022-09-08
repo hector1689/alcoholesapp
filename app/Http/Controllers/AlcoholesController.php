@@ -1357,7 +1357,7 @@ para la pantalla adeudos registrados
             //dd($file->getClientOriginalName());
             $nombre = $croquis->getClientOriginalName(); // foto.png
             $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
-            //dd($imagen_sugerida);
+            dd($imagen_sugerida);
 
             $url = "https://staticstam.tamaulipas.gob.mx:9000/" . getenv("AWS_BUCKET")."/".$imagen_sugerida;
 
