@@ -1210,7 +1210,7 @@ para la pantalla adeudos registrados
               $ArrGuardado["desc_tipo_negocio"]=$row[9];
               $ArrGuardado["folio_licencia"]=$row[10];
               $ArrGuardado["situacion"]=$row[11];
-
+              
               $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
             }
