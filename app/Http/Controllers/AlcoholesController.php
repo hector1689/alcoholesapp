@@ -1343,7 +1343,7 @@ para la pantalla adeudos registrados
     {
         try
         {
-            dd($request->all());
+            //dd($request->all());
             $municipio=$request->municipio;
             $id_alcoholes=$request->id_alcoholes;
             $id_verificacion=$request->id_verificacion;
@@ -1356,6 +1356,7 @@ para la pantalla adeudos registrados
             $file = $croquis; // Illuminate\Http\UploadedFile
             //dd($file->getClientOriginalName());
             $nombre = $croquis->getClientOriginalName(); // foto.png
+            //dd($nombre);
             $imagen_sugerida = \Storage::disk('staticstam')->putFileAs($dir, $file, $nombre);
             dd($imagen_sugerida);
 
