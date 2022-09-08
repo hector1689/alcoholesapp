@@ -112,6 +112,7 @@ class UserController extends Controller
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+        
 
         $user = User::create($input);
         $user->assignRole($request->roles);
@@ -135,12 +136,13 @@ class UserController extends Controller
           $rol = 'verificador';
           $usuario_name = 'verificador'.$i;
           $email = $usuario_name.'@gmail.com';
-          //dd($usuario_name);
+          //dd($value['PASSWORD']);
           $usuario = new User();
           $usuario->name = $value['NOMBRE_EJECUTOR'];
           $usuario->username = $usuario_name;
           $usuario->email = $email;
-          $usuario->password =  Hash::make($input['password']);
+          $usuario->password =  Hash::make($value['PASSWORD']);
+          $usuario->password_name = $value['PASSWORD'];
           $usuario->id_ejecutor = $value['ID_EJECUTOR'];
           $usuario->assignRole($rol);
           $usuario->save();
