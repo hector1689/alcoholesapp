@@ -964,7 +964,8 @@ para la pantalla adeudos registrados
                 b.id_alcoholes,
                 C.NOMBRE_COMPLETO,
                 B.NOMBRE_COMERCIAL,
-                A.FECHA_DEBE_VISITAR
+                A.FECHA_DEBE_VISITAR,
+                a.id_verificacion
                 FROM  SIATT.ALCMAE_VERIFICACION A,
                 ALCMAE_ALCOHOLES B,
                 CONMAE_CONTRIBUYENTE  C
@@ -996,6 +997,8 @@ para la pantalla adeudos registrados
                    $ReemplazaLetra->fnReemplazaLetra(trim($row[2]));
                    $ArrGuardado["nombre_comercial"]=$ReemplazaLetra->Variable;
                    $ArrGuardado["fecha_debe_visitar"]=$row[3];
+                   $ArrGuardado["id_verificacion"]=$row[4];
+
                    $ArrGuardados[(string)$cuantos]=$ArrGuardado;
 
                }
