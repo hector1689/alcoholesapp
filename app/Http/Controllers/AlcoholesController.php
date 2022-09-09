@@ -650,7 +650,8 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
                 to_char( alcmae_alcoholes.fecha_baja, 'DD/MON/YYYY') as fecha_baja,
                 alcmae_alcoholes.id_contribuyente,
                 alcmae_alcoholes.folio_solicitud  ,
-                grlcat_situacion.desc_situacion
+                grlcat_situacion.desc_situacion,
+                to_number(substr(alcmae_alcoholes.id_alcoholes,1,2)) id_municipio
                 FROM alcmae_alcoholes,
                 conmae_contribuyente,
                 conmae_domicilio_alterno,
@@ -723,6 +724,10 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
                 $respuesta["id_contribuyente"]=$row[16];
                 $respuesta["folio_solicitud"]=$row[17];
                 $respuesta["desc_situacion"]=$row[18];
+
+                $respuesta["id_municipio"]=$row[19];
+
+
             }
 
           oci_free_statement($str_verifica_datos);
