@@ -474,7 +474,7 @@ class AlcoholesController extends Controller
                     GRLPAR_SALARIO_MINIMO b
                     WHERE
                     a.EJERCICIO_FISCAL = to_number(to_char(fecha_final, 'yyyy'))
-                    and a.ejercicio_fiscal =  to_number(to_char('$fecha_determinacion', 'yyyy'))
+                    and a.ejercicio_fiscal =  to_number(SUBSTR('$fecha_determinacion', 1,4))
                     and TRUNC(a.id_infraccion)= '$id_infraccion' ");
 
 
@@ -819,7 +819,7 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
               $conec_muni=$Conec_Muni->DB_conexion;
 
 
-                $strSacaPagos=oci_parse($conec_muni, "SELECT
+                $strSacaPagos=oci_parse($conec_muni, " SELECT
                     to_char( grlmae_pagos.fecha_pago, 'DD/MON/YYYY') as fecha_pago,
                     grlmae_pagos.ejercicio_fiscal,
                     grlcat_concepto.desc_concepto,
@@ -834,6 +834,7 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
                     ( grlmae_pagos.id_concepto = grlcat_concepto.id_concepto ) and
                     ( grlmae_pagos.ejercicio_fiscal = grlcat_concepto.ejercicio_fiscal ) and
                     ( grlmae_pagos.llave_padron = '$id_alcoholes' ) and
+                    (grlmae_pagos.importe_pagado > 0) and
                     ( grlmae_pagos.id_tipo_obligacion = 7 )     and
                     ( grlmae_pagos.id_concepto <> 70 )
                     union all
@@ -848,6 +849,7 @@ datos simples de encabezado de ventanas ejemplo verificaciones_negocio_dg
                     where fac.llave_padron='$id_alcoholes'
                     and fac.id_tipo_obligacion=7
                     and forma.id_forma_pago = fac.id_forma_pago
+                    AND FAC.IMPORTE_PAGADO >0
                     and (fac.id_forma_pago=5 or fac.id_forma_pago=11)
                     and fac.id_concepto = con.id_concepto
                     and fac.ejercicio_fiscal= con.ejercicio_fiscal
