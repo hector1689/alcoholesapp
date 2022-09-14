@@ -112,7 +112,7 @@ class UserController extends Controller
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-        
+
 
         $user = User::create($input);
         $user->assignRole($request->roles);
@@ -128,24 +128,42 @@ class UserController extends Controller
 
     public function nuevosUsuarios(Request $request){
 
-        $verificadores = UsuariosVerificadores::all();
-        $i=1;
+        $verificadores = UsuariosVerificadores::where('activo',1)->get();
+        $i=42;
         foreach ($verificadores as $key => $value) {
-          // code...
 
-          $rol = 'verificador';
-          $usuario_name = 'verificador'.$i;
-          $email = $usuario_name.'@gmail.com';
-          //dd($value['PASSWORD']);
-          $usuario = new User();
-          $usuario->name = $value['NOMBRE_EJECUTOR'];
-          $usuario->username = $usuario_name;
-          $usuario->email = $email;
-          $usuario->password =  Hash::make($value['PASSWORD']);
-          $usuario->password_name = $value['PASSWORD'];
-          $usuario->id_ejecutor = $value['ID_EJECUTOR'];
-          $usuario->assignRole($rol);
-          $usuario->save();
+          if ($value['ID_GRUPO'] == 6) {
+            $rol = 'verificador';
+            $usuario_name = 'verificador'.$i;
+            $email = $usuario_name.'@gmail.com';
+            //dd($value['PASSWORD']);
+            $usuario = new User();
+            $usuario->name = $value['NOMBRE_EJECUTOR'];
+            $usuario->username = $usuario_name;
+            $usuario->email = $email;
+            $usuario->password =  Hash::make($value['PASSWORD']);
+            $usuario->password_name = $value['PASSWORD'];
+            $usuario->id_ejecutor = $value['ID_EJECUTOR'];
+            $usuario->assignRole($rol);
+            $usuario->save();
+
+          }else if($value['ID_GRUPO'] == 98){
+            $rol = 'supervisor';
+            $usuario_name = 'supervisor'.$i;
+            $email = $usuario_name.'@gmail.com';
+            //dd($value['PASSWORD']);
+            $usuario = new User();
+            $usuario->name = $value['NOMBRE_EJECUTOR'];
+            $usuario->username = $usuario_name;
+            $usuario->email = $email;
+            $usuario->password =  Hash::make($value['PASSWORD']);
+            $usuario->password_name = $value['PASSWORD'];
+            $usuario->id_supervisor = $value['ID_EJECUTOR'];
+            $usuario->assignRole($rol);
+            $usuario->save();
+
+          }
+
 
           $i++;
         }
