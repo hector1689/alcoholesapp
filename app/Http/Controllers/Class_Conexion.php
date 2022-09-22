@@ -625,19 +625,19 @@ class Class_Conexion
 
 
 
-                $db_con= " (DESCRIPTION =
-                        (ADDRESS_LIST =
-                          (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.9.204)(PORT = 1521))
-                        )
-                        (CONNECT_DATA =
-                          (SID = REGNORTE)
-                          (SERVER = DEDICATED)
-                        )
-                      )";
+                // $db_con= " (DESCRIPTION =
+                //         (ADDRESS_LIST =
+                //           (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.9.204)(PORT = 1521))
+                //         )
+                //         (CONNECT_DATA =
+                //           (SID = REGNORTE)
+                //           (SERVER = DEDICATED)
+                //         )
+                //       )";
 
 
 
-            /*
+
             $db_con= "  (DESCRIPTION =
                       (ADDRESS_LIST =
                         (ADDRESS = (PROTOCOL = TCP)(HOST = 200.23.59.31)(PORT = 1521))
@@ -646,7 +646,7 @@ class Class_Conexion
                         (SID = BDGETPR)
                         (SERVER = DEDICATED)
                       )
-                    )";*/
+                    )";
 
             break;
 
